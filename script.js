@@ -266,6 +266,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Add click event to service cards for more interactivity
 document.querySelectorAll('.service-card').forEach(card => {
+    // Skip cards that already have onclick handlers (for redirects)
+    if (card.hasAttribute('onclick')) {
+        return;
+    }
+    
     card.addEventListener('click', function() {
         const serviceName = this.querySelector('h3').textContent;
         const serviceDescription = this.querySelector('p').textContent;
