@@ -139,10 +139,12 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
 // Get service name in Arabic
 function getServiceName(serviceValue) {
     const services = {
-        'tow': 'خدمة الونش',
-        'transport': 'نقل المركبات',
+        'winch': 'خدمة الونش',
+        'flatbed': 'خدمة السطحة',
+        'recovery': 'خدمة الريكفري',
+        'towing': 'سحب السيارات',
         'emergency': 'إنقاذ طوارئ',
-        'maintenance': 'صيانة طارئة'
+        'accident': 'إزالة حوادث'
     };
     return services[serviceValue] || serviceValue;
 }
@@ -275,12 +277,12 @@ document.querySelectorAll('.service-card').forEach(card => {
             
             // Map service names to select values
             const serviceMapping = {
-                'نقل المركبات': 'transport',
-                'خدمة الونش': 'tow',
-                'إنقاذ طوارئ': 'emergency',
-                'إزالة الحوادث': 'emergency',
-                'بطارية وإطارات': 'maintenance',
-                'توصيل وقود': 'maintenance'
+                'خدمات الونش والسطحة': 'winch',
+                'ريكفري وإنقاذ': 'recovery',
+                'سحب السيارات': 'towing',
+                'ونج وإزالة الحوادث': 'accident',
+                'بطارية وإطارات': 'emergency',
+                'توصيل وقود': 'emergency'
             };
             
             if (serviceSelect && serviceMapping[serviceName]) {
@@ -355,6 +357,86 @@ function lazyLoadImages() {
 
 // Call lazy load function when DOM is ready
 document.addEventListener('DOMContentLoaded', lazyLoadImages);
+
+// Add click functionality to keyword buttons
+document.addEventListener('DOMContentLoaded', function() {
+    const keywords = document.querySelectorAll('.keyword');
+    
+    keywords.forEach(keyword => {
+        keyword.addEventListener('click', function() {
+            const keywordText = this.textContent;
+            const serviceSelect = document.getElementById('service');
+            const messageTextarea = document.getElementById('message');
+            
+            // Map keywords to service values
+            const keywordMapping = {
+                'ونش': 'winch',
+                'سطحة': 'flatbed',
+                'ريكفري': 'recovery',
+                'ونج': 'winch',
+                'سحب سيارات': 'towing',
+                'إنقاذ': 'emergency',
+                'نقل مركبات': 'winch',
+                'حوادث': 'accident'
+            };
+            
+            if (serviceSelect && keywordMapping[keywordText]) {
+                serviceSelect.value = keywordMapping[keywordText];
+            }
+            
+            if (messageTextarea) {
+                messageTextarea.value = `أحتاج إلى خدمة ${keywordText}`;
+            }
+            
+            // Scroll to contact form
+            const contactSection = document.getElementById('contact');
+            const headerOffset = 80;
+            const elementPosition = contactSection.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+            
+            // Add visual feedback
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'translateY(-2px)';
+            }, 150);
+        });
+    });
+});
+
+// Add region card click functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const regionCards = document.querySelectorAll('.region-card');
+    
+    regionCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const regionName = this.querySelector('h3').textContent;
+            const messageTextarea = document.getElementById('message');
+            
+            if (messageTextarea) {
+                messageTextarea.value = `أحتاج إلى خدمة في ${regionName}`;
+            }
+            
+            // Scroll to contact form
+            const contactSection = document.getElementById('contact');
+            const headerOffset = 80;
+            const elementPosition = contactSection.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Add hover effect
+        card.style.cursor = 'pointer';
+    });
+});
 
 console.log('🚛 شركة نقل مركبات - الموقع جاهز!');
 console.log('📱 للاتصال: +971561309910');
